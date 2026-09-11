@@ -156,18 +156,28 @@ export function createAvatarController() {
     }, 4200 + Math.random() * 2800);
   }
 
+  // Each driveVisemes() call gets a generation id. Clearing the ticker bumps the
+  // id so stale closures (interval ticks or late onboundary events) become no-ops.
+  let visemeGen = 0;
+
   function clearVisemeTicker() {
     window.clearInterval(visemeTimer);
     visemeTimer = 0;
+    visemeGen += 1;
   }
 
   function driveVisemes(text) {
     const chars = String(text);
     let i = 0;
     clearVisemeTicker();
+    const gen = visemeGen;
     const tick = () => {
+      if (gen !== visemeGen) return;
       while (i < chars.length && /[\s.,!?';:]/.test(chars[i])) i += 1;
       if (i >= chars.length) {
+        // Text exhausted: close the mouth once and stop ticking so manual
+        // setViseme() calls (e.g. from the Avatar API drawer) are not overridden.
+        clearVisemeTicker();
         setViseme('closed');
         return;
       }
@@ -225,8 +235,13 @@ export function createAvatarController() {
         if (typeof event.charIndex === 'number') sync(event.charIndex);
       };
 
+      let safety = 0;
       const finish = () => {
         if (utterance !== utter) return;
+        window.clearTimeout(safety);
+        utter.onboundary = null;
+        utter.onend = null;
+        utter.onerror = null;
         clearVisemeTicker();
         utterance = null;
         setSpeaking(false);
@@ -236,6 +251,22 @@ export function createAvatarController() {
       utter.onend = finish;
       utter.onerror = finish;
       speechSynthesis.speak(utter);
+
+      // Some browsers never fire onend (no voices installed, muted tab, headless).
+      // After the estimated duration, release the speaking state; if the engine
+      // still reports activity, give it a little longer, up to a hard cap.
+      const startedAt = Date.now();
+      const estimate = Math.min(30000, 1500 + spoken.length * 90);
+      const check = () => {
+        if (utterance !== utter) return;
+        const stillBusy = speechSynthesis.speaking || speechSynthesis.pending;
+        if (stillBusy && Date.now() - startedAt < estimate + 15000) {
+          safety = window.setTimeout(check, 1500);
+          return;
+        }
+        finish();
+      };
+      safety = window.setTimeout(check, estimate);
     });
   }
 
@@ -243,19 +274,26 @@ export function createAvatarController() {
     speechSynthesis.addEventListener('voiceschanged', pickVoice);
   }
 
-  scheduleBlink();
-  scheduleWander();
+  /** Start (or restart) idle blinking and gaze wander. Safe to call repeatedly. */
+  function start() {
+    destroyed = false;
+    scheduleBlink();
+    scheduleWander();
+  }
 
+  /** Stop speech and idle timers. A later start() brings the avatar back to life. */
   function destroy() {
     destroyed = true;
     stop();
     window.clearTimeout(blinkTimer);
     window.clearTimeout(wanderTimer);
     window.clearTimeout(blinkHold);
-    listeners.clear();
   }
 
+  start();
+
   return {
+    start,
     setEmotion,
     setViseme,
     setListening,

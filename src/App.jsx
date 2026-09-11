@@ -7,9 +7,9 @@ import { fetchHealth, sendChat } from './lib/api.js';
 import { createRecognizer, speechSupported } from './lib/speech.js';
 
 export default function App() {
-  const controllerRef = useRef(null);
-  if (!controllerRef.current) controllerRef.current = createAvatarController();
-  const controller = controllerRef.current;
+  // One controller for the life of the component. Created lazily once; never
+  // recreated on re-render, so effects keyed on it do not loop.
+  const [controller] = useState(() => createAvatarController());
   const [avatarState, setAvatarState] = useState(() => controller.getState());
   const [mode, setMode] = useState('support');
   const [messages, setMessages] = useState(() => seedMessages('support'));
@@ -28,13 +28,12 @@ export default function App() {
 
   useEffect(() => controller.subscribe(setAvatarState), [controller]);
 
-  useEffect(
-    () => () => {
-      controller.destroy();
-      controllerRef.current = null;
-    },
-    [controller],
-  );
+  // start() is idempotent and destroy() is reversible, so React StrictMode's
+  // mount → unmount → mount simulation leaves the idle animation running.
+  useEffect(() => {
+    controller.start();
+    return () => controller.destroy();
+  }, [controller]);
 
   useEffect(() => {
     fetchHealth().then(setHealth);
