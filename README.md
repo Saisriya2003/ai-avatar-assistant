@@ -6,6 +6,8 @@ Aria is the face. The chat panel is the product. The **AvatarEngine** is the int
 
 [![CI](https://github.com/Saisriya2003/ai-avatar-assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/Saisriya2003/ai-avatar-assistant/actions/workflows/ci.yml)
 
+Full documentation — architecture, the AvatarEngine API, speech and lip-sync, reply engines, modes, API, UI workflow, configuration, CI: **[DOCUMENTATION.md](DOCUMENTATION.md)**.
+
 ## Quick start
 
 **Requirements:** [Node.js 18+](https://nodejs.org/) on your PATH. No API keys. Use Chrome or Edge for microphone and speech.
