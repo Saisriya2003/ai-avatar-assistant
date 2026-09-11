@@ -45,7 +45,7 @@ const SUPPORT_INTENTS = [
       'To open a ticket: Help in the Lumen sidebar, then New ticket. Choose outage, access, or billing so it routes cleanly. I can file a draft here as LC-48219 if you describe the problem in one sentence.',
   },
   {
-    keys: ['refund', 'cancel', 'money back', 'charge', 'charged'],
+    keys: ['refund', 'cancel', 'cancelled', 'cancellation', 'money back', 'charge', 'charged'],
     emotion: 'concern',
     reply:
       'Annual plans have a 14-day full refund if the workspace stayed under five active canvases. After that, unused months on Halo or Nova are prorated as credit. Monthly plans can be cancelled before the next invoice. I can start a refund review as LC-R-1106 — tell me the workspace name.',
@@ -154,18 +154,41 @@ function lastUserText(messages) {
   return last?.text || last?.content || '';
 }
 
+// Words that appear in many different questions. They may confirm an intent
+// but must never outrank the specific topic word ("refund", "pricing", ...).
+const GENERIC = new Set(['what is', 'how do', 'how to', 'about', 'workspace', 'lumen', 'what can']);
+
+function keyPattern(key) {
+  const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // Whole-word match with common English suffixes, so "charge" finds
+  // "charged", "remind" finds "reminders", and "hi" does not match "this".
+  return new RegExp(`(^|[^a-z0-9'])${escaped}(?:s|es|ed|ing|er|ers|y|ies|ize)?(?![a-z0-9])`);
+}
+
+function scoreIntent(hay, intent) {
+  let score = 0;
+  let specificity = 0;
+  for (const key of intent.keys) {
+    if (!keyPattern(key).test(hay)) continue;
+    score += GENERIC.has(key) ? 1 : key.includes(' ') ? 3 : 2;
+    specificity += key.length;
+  }
+  return { score, specificity };
+}
+
 function matchIntent(text, intents) {
+  const hay = normalize(text);
   let best = null;
   let bestScore = 0;
-  const hay = normalize(text);
+  let bestSpecificity = 0;
   for (const intent of intents) {
-    let score = 0;
-    for (const key of intent.keys) {
-      if (hay.includes(key)) score += key.includes(' ') ? 3 : 2;
-    }
-    if (score > bestScore) {
+    const { score, specificity } = scoreIntent(hay, intent);
+    // Higher score wins; on a tie the intent whose matched keys are more
+    // specific (longer) wins, so "hi ... refund" is a refund question.
+    if (score > bestScore || (score === bestScore && score > 0 && specificity > bestSpecificity)) {
       best = intent;
       bestScore = score;
+      bestSpecificity = specificity;
     }
   }
   return bestScore >= 2 ? best : null;

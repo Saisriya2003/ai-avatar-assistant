@@ -20,8 +20,8 @@ jobs:
       - name: Smoke test /api/chat
         run: |
           npm run server &
-          for i in $(seq 1 30); do curl -sf http://127.0.0.1:5060/api/health && break || sleep 1; done
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:5070/api/health && break || sleep 1; done
           echo
-          curl -sf -X POST http://127.0.0.1:5060/api/chat -H 'Content-Type: application/json' \
+          curl -sf -X POST http://127.0.0.1:5070/api/chat -H 'Content-Type: application/json' \
             -d '{"mode":"support","messages":[{"role":"user","text":"What is Lumen Cloud?"}]}'
           echo

@@ -17,7 +17,7 @@ git clone https://github.com/Saisriya2003/ai-avatar-assistant.git
 cd ai-avatar-assistant
 ```
 
-Then run the one-command starter for your OS. It installs dependencies on first run, starts the chat API on `http://127.0.0.1:5060` and the UI on `http://localhost:5176`, and opens the browser.
+Then run the one-command starter for your OS. It installs dependencies on first run, starts the chat API on `http://127.0.0.1:5070` and the UI on `http://localhost:5176`, and opens the browser.
 
 | OS | Command |
 | --- | --- |
@@ -36,7 +36,7 @@ Manual steps are under **How to run** below. CI builds the UI and smoke-tests `/
 
 - **Status pill says "On-device fallback"** — the Express server is not running; chat still works from the built-in client responder. Start `npm run server`.
 - **Mic button disabled** — the browser lacks `SpeechRecognition`. Use Chrome or Edge and allow the microphone.
-- **Port 5060 or 5176 already in use** — set `PORT` in `.env` and update the proxy target in `vite.config.js`.
+- **Port 5070 or 5176 already in use** — set `PORT` in `.env` and update the proxy target in `vite.config.js`.
 
 | | |
 | --- | --- |
@@ -57,7 +57,7 @@ No paid avatar vendor is required. Ready Player Me, D-ID, or HeyGen can sit behi
 ## Architecture
 
 ```
-React (Vite)                         Express :5060
+React (Vite)                         Express :5070
 ┌─────────────────────────┐          ┌─────────────────────┐
 │ Avatar.jsx  (SVG face)  │          │ POST /api/chat      │
 │ engine.js   (API)       │  /api    │  local intents  OR  │
@@ -104,7 +104,7 @@ npm install
 npm run server
 ```
 
-Listens on `http://127.0.0.1:5060`.
+Listens on `http://127.0.0.1:5070`.
 
 **Terminal 2 — UI**
 
@@ -139,12 +139,12 @@ Restart the server. `GET /api/health` will report `"llm": true`. The UI still wo
 - Use two PowerShell windows (or two Cursor terminals) for client and server.
 - **Chrome or Edge** is the reliable path for Web Speech: `webkitSpeechRecognition` plus `speechSynthesis`. Firefox may lack recognition; typing still works.
 - Allow the microphone when the browser asks. If permission is denied, Aria stays on text.
-- If port 5060 is taken: set `PORT` in `.env` and match `vite.config.js` proxy target.
+- If port 5070 is taken: set `PORT` in `.env` and match `vite.config.js` proxy target. Pick a port browsers allow — Chrome and Edge block 5060/5061 (SIP) with `ERR_UNSAFE_PORT`.
 - `curl.exe` works in PowerShell; the `curl` alias is `Invoke-WebRequest`.
 
 ```powershell
-curl.exe -s http://127.0.0.1:5060/api/health
-curl.exe -s -X POST http://127.0.0.1:5060/api/chat -H "Content-Type: application/json" -d "{\"mode\":\"support\",\"messages\":[{\"role\":\"user\",\"text\":\"What is Lumen Cloud?\"}]}"
+curl.exe -s http://127.0.0.1:5070/api/health
+curl.exe -s -X POST http://127.0.0.1:5070/api/chat -H "Content-Type: application/json" -d "{\"mode\":\"support\",\"messages\":[{\"role\":\"user\",\"text\":\"What is Lumen Cloud?\"}]}"
 ```
 
 ## Product modes

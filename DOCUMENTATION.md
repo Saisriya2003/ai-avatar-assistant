@@ -50,7 +50,7 @@ Design goals:
 | Layer | Technology | Notes |
 | --- | --- | --- |
 | UI library | React 18 | JSX, hooks, StrictMode-safe lifecycle |
-| Build tool / dev server | Vite 6 | port 5176, `strictPort`, `/api` proxy → 5060 |
+| Build tool / dev server | Vite 6 | port 5176, `strictPort`, `/api` proxy → 5070 |
 | Avatar rendering | Inline SVG (`Avatar.jsx`) | emotions and visemes as attribute/transform changes; `requestAnimationFrame` sway |
 | Avatar control | `createAvatarController()` (`engine.js`) | framework-agnostic plain JS; publish/subscribe |
 | Text-to-speech | Web Speech API `speechSynthesis` / `SpeechSynthesisUtterance` | `onboundary` char indexes drive lip-sync |
@@ -70,7 +70,7 @@ ai-avatar-assistant/
 ├── index.html                  root HTML, fonts, favicon
 ├── public/favicon.svg
 ├── package.json                scripts: dev, build, preview, server
-├── vite.config.js              port 5176, /api → http://127.0.0.1:5060
+├── vite.config.js              port 5176, /api → http://127.0.0.1:5070
 ├── server/
 │   ├── index.js                Express: /api/health, /api/chat
 │   └── brain.js                SUPPORT/ASSISTANT facts and intents, matchIntent, replyTo (OpenAI optional)
@@ -103,7 +103,7 @@ ai-avatar-assistant/
 ## 4. System architecture
 
 ```
-Browser (Vite, :5176)                                          Node server (:5060)
+Browser (Vite, :5176)                                          Node server (:5070)
 ┌───────────────────────────────────────────────────────┐      ┌──────────────────────────────┐
 │ App.jsx                                               │      │ Express                      │
 │  ├─ controller = createAvatarController()  ─────┐     │      │  GET  /api/health            │
@@ -197,7 +197,7 @@ File: `src/avatar/Avatar.jsx`. A layered inline SVG bust (hair, face, eyes with 
 
 Three layers, tried in order:
 
-1. **Server local intents** (`server/brain.js`, default) — `matchIntent` normalises the last user message and scores each intent by keyword hits (2 points per single word, 3 per phrase); the best intent with score ≥ 2 wins. Each intent carries an `emotion`. If nothing matches, a mode-specific clarifying reply with emotion `think` is returned.
+1. **Server local intents** (`server/brain.js`, default) — `matchIntent` normalises the last user message and scores each intent by keyword hits. Keys match on whole words with common English suffixes (`charge` finds "charged", `remind` finds "reminders", `hi` does not match "this"). A single topic word scores 2, a phrase 3, and generic words that appear in many questions (`what is`, `how do`, `how to`, `about`, `workspace`, `lumen`, `what can`) only 1, so "What is your refund policy?" resolves to *refund*, not *product*. Ties are broken toward the intent whose matched keys are longer (more specific). The best intent with score ≥ 2 wins; each intent carries an `emotion`. If nothing matches, a mode-specific clarifying reply with emotion `think` is returned.
 2. **OpenAI** (when `OPENAI_API_KEY` is set) — the full thread is sent with a mode-specific system prompt (`SUPPORT_FACTS` or `ASSISTANT_FACTS`: product facts, plan prices, refund policy, seeded calendar, voice rules "short paragraphs, no exclamation spam, no emoji"), temperature 0.5. The emotion is inferred from the reply text (`inferEmotion`: apologies/refund/outage → `concern`; glad/welcome/pinned → `smile`; consider/next/option → `think`). Any HTTP failure or empty reply falls back to layer 1.
 3. **Client fallback** (`src/lib/localBrain.js`) — the same intents in the browser. `sendChat()` aborts the server request after **9 s** or on any error and answers locally; the status pill then reads *On-device fallback*.
 
@@ -220,7 +220,7 @@ Switching modes stops speech, reseeds the thread, and sets the avatar to `smile`
 
 ## 10. REST API reference
 
-Base URL (dev): `http://127.0.0.1:5060`.
+Base URL (dev): `http://127.0.0.1:5070`.
 
 | Method | Path | Request | Response |
 | --- | --- | --- | --- |
@@ -294,13 +294,13 @@ cd ai-avatar-assistant
 ./start.sh       # macOS / Linux
 ```
 
-Installs dependencies on first run, starts the server on 5060 and Vite on 5176, opens the browser.
+Installs dependencies on first run, starts the server on 5070 and Vite on 5176, opens the browser.
 
 ### Manual
 
 ```bash
 npm install
-npm run server   # http://127.0.0.1:5060
+npm run server   # http://127.0.0.1:5070
 npm run dev      # http://localhost:5176  (second terminal)
 ```
 
@@ -316,7 +316,7 @@ Copy `.env.example` to `.env` in the repo root (read by `server/index.js`).
 | --- | --- | --- |
 | `OPENAI_API_KEY` | unset → local intents | Enables OpenAI replies on the server; `/api/health.llm` becomes `true` |
 | `OPENAI_MODEL` | `gpt-4o-mini` | Chat model |
-| `PORT` | `5060` | Server port (update `vite.config.js` proxy and start scripts if changed) |
+| `PORT` | `5070` | Server port (update `vite.config.js` proxy and start scripts if changed). Avoid 5060/5061: browsers refuse those SIP ports with `ERR_UNSAFE_PORT`. |
 
 Browser permissions: the microphone prompt appears on first Mic use; speech synthesis needs no permission.
 
