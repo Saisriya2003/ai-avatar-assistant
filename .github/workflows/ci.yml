@@ -16,6 +16,8 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - name: Unit tests (intent routing, visemes, AvatarEngine controller)
+        run: npm test
       - run: npm run build
       - name: Smoke test /api/chat
         run: |

@@ -1,0 +1,15 @@
+# Aria in one container: Express serves the chat API and the built React UI.
+#   docker compose up --build
+#   App http://localhost:5176      API http://localhost:5176/api/health
+# Optional: put OPENAI_API_KEY in a .env file next to this compose file to enable OpenAI replies.
+# Change the host port with WEB_PORT.
+services:
+  aria:
+    build: .
+    environment:
+      PORT: "5070"
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+    ports:
+      - "${WEB_PORT:-5176}:5070"
+    restart: unless-stopped

@@ -1,6 +1,7 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { replyTo } from './brain.js';
@@ -61,8 +62,19 @@ process.on('uncaughtException', (err) => {
   console.error('Aria server kept running after an unexpected error:', err.message);
 });
 
+// When a production build exists (npm run build, or the Docker image), serve it
+// from the same origin so one process is the whole app. In development Vite
+// serves the UI and proxies /api here instead.
+const dist = path.join(__dirname, '..', 'dist');
+const serveUi = fs.existsSync(path.join(dist, 'index.html'));
+if (serveUi) {
+  app.use(express.static(dist));
+  app.get(/^(?!\/api\/).*/, (_req, res) => res.sendFile(path.join(dist, 'index.html')));
+}
+
 app.listen(PORT, '0.0.0.0', () => {
   const llm = Boolean(process.env.OPENAI_API_KEY);
   console.log(`Aria server listening on http://127.0.0.1:${PORT}`);
   console.log(`Reply engine: ${llm ? 'OpenAI' : 'local intents'}`);
+  if (serveUi) console.log(`Serving the built UI from ${dist}`);
 });

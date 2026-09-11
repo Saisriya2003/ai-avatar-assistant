@@ -4,13 +4,19 @@ An interactive AI avatar for customer support and virtual-assistant conversation
 
 Aria is the face. The chat panel is the product. The **AvatarEngine** is the integration API.
 
-[![CI](https://github.com/Saisriya2003/ai-avatar-assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/Saisriya2003/ai-avatar-assistant/actions/workflows/ci.yml)
+[![CI](https://github.com/Saisriya2003/ai-avatar-assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/Saisriya2003/ai-avatar-assistant/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-c9844a.svg)](LICENSE) [![Tests: node:test](https://img.shields.io/badge/tests-node%3Atest%20%C2%B7%2017-7eb8a2.svg)](test) [![Docker](https://img.shields.io/badge/docker-single%20container-0c0a08.svg)](Dockerfile)
 
 Full documentation — architecture, the AvatarEngine API, speech and lip-sync, reply engines, modes, API, UI workflow, configuration, CI: **[DOCUMENTATION.md](DOCUMENTATION.md)**.
 
+## Screenshots
+
+| Support mode — Lumen Cloud customer support | Assistant mode — calendar, reminders, drafts |
+| --- | --- |
+| ![Support mode: the Aria avatar on the left, a pricing answer in the chat on the right](docs/screenshots/support.jpg) | ![Assistant mode: the avatar reading back the seeded Friday calendar](docs/screenshots/assistant.jpg) |
+
 ## Quick start
 
-**Requirements:** [Node.js 18+](https://nodejs.org/) on your PATH. No API keys. Use Chrome or Edge for microphone and speech.
+**Requirements:** [Node.js 18+](https://nodejs.org/) on your PATH. No API keys. Use Chrome or Edge for microphone and speech. Prefer containers? See [Run with Docker](#run-with-docker).
 
 ```bash
 git clone https://github.com/Saisriya2003/ai-avatar-assistant.git
@@ -155,3 +161,26 @@ curl.exe -s -X POST http://127.0.0.1:5070/api/chat -H "Content-Type: application
 ## Swap-in path
 
 Keep `createAvatarController()` as the façade. Replace the SVG renderer in `Avatar.jsx` or the internals of `speak()` with a vendor stream. Chat, mic, and `/api/chat` do not change.
+
+## Run with Docker
+
+One container: Express serves `/api/chat` and the built React UI from the same origin.
+
+```bash
+docker compose up --build
+# App http://localhost:5176        API  http://localhost:5176/api/health
+```
+
+Or without compose: `docker build -t aria . && docker run -p 5176:5070 aria`. Put `OPENAI_API_KEY=...` in a `.env` file beside `docker-compose.yml` for OpenAI replies. Change the host port with `WEB_PORT`.
+
+## Tests
+
+`test/` — 17 tests with Node's built-in runner: intent routing for every suggested prompt in both modes (server engine and client fallback), whole-word key matching, emotion tagging, viseme mapping, and the **AvatarEngine controller** — subscriptions, validation, gaze clamping and pointer lock, blink pulse, `speak()` lifecycle, `stop()` not clobbering manual visemes, and reversible `destroy()`/`start()`.
+
+```bash
+npm test
+```
+
+## License
+
+MIT — see [LICENSE](LICENSE). Lumen Cloud and its plans are fictional.

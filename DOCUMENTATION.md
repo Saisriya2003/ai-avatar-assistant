@@ -72,7 +72,7 @@ ai-avatar-assistant/
 ├── package.json                scripts: dev, build, preview, server
 ├── vite.config.js              port 5176, /api → http://127.0.0.1:5070
 ├── server/
-│   ├── index.js                Express: /api/health, /api/chat
+│   ├── index.js                Express: /api/health, /api/chat, serves dist/ when built
 │   └── brain.js                SUPPORT/ASSISTANT facts and intents, matchIntent, replyTo (OpenAI optional)
 ├── src/
 │   ├── main.jsx                React root (StrictMode)
@@ -304,9 +304,13 @@ npm run server   # http://127.0.0.1:5070
 npm run dev      # http://localhost:5176  (second terminal)
 ```
 
+### Docker
+
+`docker compose up --build` (or `docker build -t aria . && docker run -p 5176:5070 aria`) produces one container: a multi-stage build compiles the UI, then a `node:20-alpine` runtime runs `server/index.js`, which serves `/api/chat` **and** the built UI from the same origin. Host port defaults to 5176 (`WEB_PORT`); an `.env` beside the compose file can supply `OPENAI_API_KEY`.
+
 ### Production build
 
-`npm run build` → `dist/`. Serve statically with `/api` proxied to the Node server (the client uses relative `/api` paths).
+`npm run build` → `dist/`. When `dist/index.html` exists, `npm run server` serves it itself (static files plus SPA fallback for non-`/api` routes), so a single Node process is the whole app. Alternatively serve `dist/` from any static host with `/api` proxied to the Node server (the client uses relative `/api` paths).
 
 ## 14. Configuration
 
@@ -322,9 +326,17 @@ Browser permissions: the microphone prompt appears on first Mic use; speech synt
 
 ## 15. Testing, CI, and verification
 
+### Automated tests (`test/`, `node --test`)
+
+17 tests using Node's built-in runner, run with `npm test`:
+
+- `brain.test.js` — every suggested prompt in both modes reaches its own intent; specific topic words outrank generic question words ("hello, what is the refund policy" → refund); whole-word matching ("this" does not trigger the "hi" greeting); every reply carries a renderable emotion; `replyTo` uses the local engine without an OpenAI key.
+- `localBrain.test.js` — the client fallback routes the same prompts; reminders echo the request; empty input gets a listening prompt; unknown input gets a clarifying fallback.
+- `engine.test.js` — with a `window` shim and no `speechSynthesis`: viseme mapping and value lists; initial state and synchronous subscriber snapshots with unsubscribe; invalid emotions ignored; listening switches the face; gaze clamping, pointer lock over idle wander, release; blink pulse; `speak()` shows several mouth shapes then resolves closed; `stop()` interrupts and manual visemes are not clobbered by stale ticks; `destroy()`/`start()` is reversible and keeps subscribers.
+
 ### GitHub Actions (`.github/workflows/ci.yml`)
 
-Node 20 → `npm ci` → `npm run build` → start `node server/index.js` → `GET /api/health` → `POST /api/chat` with a support question → assert 200 and a non-empty reply.
+Node 20 → `npm ci` → `npm test` → `npm run build` → start `node server/index.js` → `GET /api/health` → `POST /api/chat` with a support question → assert 200 and a non-empty reply.
 
 ### End-to-end verification performed
 
