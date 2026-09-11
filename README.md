@@ -4,15 +4,37 @@ An interactive AI avatar for customer support and virtual-assistant conversation
 
 Aria is the face. The chat panel is the product. The **AvatarEngine** is the integration API.
 
-## Quick start (Windows)
+[![CI](https://github.com/Saisriya2003/ai-avatar-assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/Saisriya2003/ai-avatar-assistant/actions/workflows/ci.yml)
 
-Needs Node 18+. No API keys. Use Chrome or Edge for the microphone.
+## Quick start
 
-```powershell
-.\start.ps1
+**Requirements:** [Node.js 18+](https://nodejs.org/) on your PATH. No API keys. Use Chrome or Edge for microphone and speech.
+
+```bash
+git clone https://github.com/Saisriya2003/ai-avatar-assistant.git
+cd ai-avatar-assistant
 ```
 
-Installs dependencies on first run, starts the chat API on `http://127.0.0.1:5060` and the UI on `http://localhost:5176`, and opens the browser.
+Then run the one-command starter for your OS. It installs dependencies on first run, starts the chat API on `http://127.0.0.1:5060` and the UI on `http://localhost:5176`, and opens the browser.
+
+| OS | Command |
+| --- | --- |
+| Windows (PowerShell) | `.\start.ps1` |
+| macOS / Linux | `chmod +x start.sh && ./start.sh` |
+
+If PowerShell refuses to run the script ("running scripts is disabled"), use:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\start.ps1
+```
+
+Manual steps are under **How to run** below. CI builds the UI and smoke-tests `/api/chat` on every push.
+
+### Troubleshooting
+
+- **Status pill says "On-device fallback"** — the Express server is not running; chat still works from the built-in client responder. Start `npm run server`.
+- **Mic button disabled** — the browser lacks `SpeechRecognition`. Use Chrome or Edge and allow the microphone.
+- **Port 5060 or 5176 already in use** — set `PORT` in `.env` and update the proxy target in `vite.config.js`.
 
 | | |
 | --- | --- |
