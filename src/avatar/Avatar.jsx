@@ -67,7 +67,7 @@ export default function Avatar({ controller, state }) {
       <div className="avatar-orb avatar-orb-a" aria-hidden="true" />
       <div className="avatar-orb avatar-orb-b" aria-hidden="true" />
 
-      <svg className="avatar-svg" viewBox="0 0 360 480" role="img" aria-label="Aria, the AI avatar">
+      <svg className="avatar-svg" viewBox="0 0 360 480" role="img" aria-label="The AI avatar">
         <defs>
           <radialGradient id="skin" cx="42%" cy="32%" r="70%">
             <stop offset="0%" stopColor="#f0c7b0" />
@@ -213,7 +213,7 @@ export default function Avatar({ controller, state }) {
 
       <div className="avatar-nameplate">
         <p className="avatar-kicker">Avatar engine</p>
-        <h1>Aria</h1>
+        <h1>AI Avatar Integration System</h1>
         <p className="avatar-tag">An AI avatar for support and assisted conversations.</p>
       </div>
     </div>

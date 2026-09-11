@@ -33,7 +33,7 @@ export function seedMessages(mode) {
       {
         id: 'seed-a1',
         role: 'aria',
-        text: 'I am Aria, your virtual assistant. I can walk through Friday, pin reminders, and help you think out loud.',
+        text: 'I am your AI avatar and virtual assistant. I can walk through Friday, pin reminders, and help you think out loud.',
         emotion: 'smile',
         at: Date.now() - 40000,
       },
@@ -51,7 +51,7 @@ export function seedMessages(mode) {
     {
       id: 'seed-s1',
       role: 'aria',
-      text: 'Welcome to Lumen Cloud support. I am Aria. Ask about plans, tickets, or refunds — or tap a prompt to begin.',
+      text: 'Welcome to Lumen Cloud support. I am your AI avatar. Ask about plans, tickets, or refunds — or tap a prompt to begin.',
       emotion: 'smile',
       at: Date.now() - 40000,
     },

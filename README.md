@@ -1,10 +1,10 @@
-# Aria — AI Avatar Integration System
+# AI Avatar Integration System
 
 An interactive AI avatar for customer support and virtual-assistant conversations. Built as a portfolio piece for **Pettem Sai Sriya**.
 
-Aria is the face. The chat panel is the product. The **AvatarEngine** is the integration API.
+The avatar is the face. The chat panel is the product. The **AvatarEngine** is the integration API.
 
-[![CI](https://github.com/Saisriya2003/ai-avatar-assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/Saisriya2003/ai-avatar-assistant/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-c9844a.svg)](LICENSE) [![Tests: node:test](https://img.shields.io/badge/tests-node%3Atest%20%C2%B7%2017-7eb8a2.svg)](test) [![Docker](https://img.shields.io/badge/docker-single%20container-0c0a08.svg)](Dockerfile)
+[![CI](https://github.com/Saisriya2003/ai-avatar-integration-system/actions/workflows/ci.yml/badge.svg)](https://github.com/Saisriya2003/ai-avatar-integration-system/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-c9844a.svg)](LICENSE) [![Tests: node:test](https://img.shields.io/badge/tests-node%3Atest%20%C2%B7%2017-7eb8a2.svg)](test) [![Docker](https://img.shields.io/badge/docker-single%20container-0c0a08.svg)](Dockerfile)
 
 Full documentation — architecture, the AvatarEngine API, speech and lip-sync, reply engines, modes, API, UI workflow, configuration, CI: **[DOCUMENTATION.md](DOCUMENTATION.md)**.
 
@@ -12,15 +12,15 @@ Full documentation — architecture, the AvatarEngine API, speech and lip-sync, 
 
 | Support mode — Lumen Cloud customer support | Assistant mode — calendar, reminders, drafts |
 | --- | --- |
-| ![Support mode: the Aria avatar on the left, a pricing answer in the chat on the right](docs/screenshots/support.jpg) | ![Assistant mode: the avatar reading back the seeded Friday calendar](docs/screenshots/assistant.jpg) |
+| ![Support mode: the avatar on the left, a pricing answer in the chat on the right](docs/screenshots/support.jpg) | ![Assistant mode: the avatar reading back the seeded Friday calendar](docs/screenshots/assistant.jpg) |
 
 ## Quick start
 
 **Requirements:** [Node.js 18+](https://nodejs.org/) on your PATH. No API keys. Use Chrome or Edge for microphone and speech. Prefer containers? See [Run with Docker](#run-with-docker).
 
 ```bash
-git clone https://github.com/Saisriya2003/ai-avatar-assistant.git
-cd ai-avatar-assistant
+git clone https://github.com/Saisriya2003/ai-avatar-integration-system.git
+cd ai-avatar-integration-system
 ```
 
 Then run the one-command starter for your OS. It installs dependencies on first run, starts the chat API on `http://127.0.0.1:5070` and the UI on `http://localhost:5176`, and opens the browser.
@@ -144,7 +144,7 @@ Restart the server. `GET /api/health` will report `"llm": true`. The UI still wo
 
 - Use two PowerShell windows (or two Cursor terminals) for client and server.
 - **Chrome or Edge** is the reliable path for Web Speech: `webkitSpeechRecognition` plus `speechSynthesis`. Firefox may lack recognition; typing still works.
-- Allow the microphone when the browser asks. If permission is denied, Aria stays on text.
+- Allow the microphone when the browser asks. If permission is denied, the avatar stays on text.
 - If port 5070 is taken: set `PORT` in `.env` and match `vite.config.js` proxy target. Pick a port browsers allow — Chrome and Edge block 5060/5061 (SIP) with `ERR_UNSAFE_PORT`.
 - `curl.exe` works in PowerShell; the `curl` alias is `Invoke-WebRequest`.
 
@@ -171,7 +171,7 @@ docker compose up --build
 # App http://localhost:5176        API  http://localhost:5176/api/health
 ```
 
-Or without compose: `docker build -t aria . && docker run -p 5176:5070 aria`. Put `OPENAI_API_KEY=...` in a `.env` file beside `docker-compose.yml` for OpenAI replies. Change the host port with `WEB_PORT`.
+Or without compose: `docker build -t ai-avatar-integration-system . && docker run -p 5176:5070 ai-avatar-integration-system`. Put `OPENAI_API_KEY=...` in a `.env` file beside `docker-compose.yml` for OpenAI replies. Change the host port with `WEB_PORT`.
 
 ## Tests
 

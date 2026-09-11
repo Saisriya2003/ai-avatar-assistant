@@ -10,7 +10,7 @@ export default function MessageList({ messages, pending, error }) {
   if (!messages.length && !pending) {
     return (
       <div className="msg-empty">
-        <p>No messages yet. Aria is ready when you are.</p>
+        <p>No messages yet. The avatar is ready when you are.</p>
       </div>
     );
   }
@@ -20,7 +20,7 @@ export default function MessageList({ messages, pending, error }) {
       {messages.map((msg) => (
         <article key={msg.id} className={`msg msg-${msg.role}`}>
           <header>
-            <span>{msg.role === 'aria' ? 'Aria' : 'You'}</span>
+            <span>{msg.role === 'aria' ? 'Avatar' : 'You'}</span>
             <time>{formatTime(msg.at)}</time>
           </header>
           <p>{msg.text}</p>
@@ -30,10 +30,10 @@ export default function MessageList({ messages, pending, error }) {
       {pending ? (
         <article className="msg msg-aria is-pending">
           <header>
-            <span>Aria</span>
+            <span>Avatar</span>
             <time>thinking</time>
           </header>
-          <p className="dots" aria-label="Aria is thinking">
+          <p className="dots" aria-label="The avatar is thinking">
             <span />
             <span />
             <span />

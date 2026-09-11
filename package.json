@@ -1,9 +1,9 @@
 {
-  "name": "aria-ai-avatar",
+  "name": "ai-avatar-integration-system",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Aria — an AI avatar for support and assisted conversations.",
+  "description": "AI Avatar Integration System — an interactive AI avatar for support and assisted conversations.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

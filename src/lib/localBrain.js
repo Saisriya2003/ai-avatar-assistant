@@ -20,14 +20,14 @@ const SUPPORT_INTENTS = [
     emotion: 'smile',
     keys: ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'who are you'],
     reply:
-      'I am Aria, the Lumen Cloud support avatar. I can walk you through plans, tickets, billing, and refunds. What do you need?',
+      'I am the Lumen Cloud support avatar. I can walk you through plans, tickets, billing, and refunds. What do you need?',
   },
   {
     id: 'product',
     emotion: 'smile',
     keys: ['what is', 'lumen', 'product', 'about', 'workspace', 'canvas'],
     reply:
-      'Lumen Cloud is a live workspace for teams that think in canvases. You sketch together, keep decisions in a vault, and let Aria-style notes land after every meeting. Spark is free. Halo and Nova add shared vaults, integrations, and stronger support.',
+      'Lumen Cloud is a live workspace for teams that think in canvases. You sketch together, keep decisions in a vault, and let meeting notes land after every meeting. Spark is free. Halo and Nova add shared vaults, integrations, and stronger support.',
   },
   {
     id: 'pricing',
@@ -81,7 +81,7 @@ const SUPPORT_INTENTS = [
     id: 'bye',
     emotion: 'smile',
     keys: ['bye', 'goodbye', 'that is all', "that's all", 'done'],
-    reply: 'I will close this conversation on my side. Open it again anytime — Aria will pick up from the last ticket you mentioned.',
+    reply: 'I will close this conversation on my side. Open it again anytime — the avatar will pick up from the last ticket you mentioned.',
   },
 ];
 
@@ -91,7 +91,7 @@ const ASSISTANT_INTENTS = [
     emotion: 'smile',
     keys: ['hello', 'hi', 'hey', 'who are you', 'what can you'],
     reply:
-      'I am Aria, your virtual assistant. I can walk the day, hold reminders, and help you draft the next thing. What should we do first?',
+      'I am your AI avatar and virtual assistant. I can walk the day, hold reminders, and help you draft the next thing. What should we do first?',
   },
   {
     id: 'calendar',
@@ -125,7 +125,7 @@ const ASSISTANT_INTENTS = [
     emotion: 'smile',
     keys: ['draft', 'status', 'write', 'email', 'update'],
     reply:
-      'Draft status: “Avatar engine is live with visemes, emotion, and a local reply path. Support and assistant modes share the same Aria surface. Next is an optional OpenAI bind behind the existing /api/chat contract.” I can shorten that.',
+      'Draft status: “Avatar engine is live with visemes, emotion, and a local reply path. Support and assistant modes share the same avatar surface. Next is an optional OpenAI bind behind the existing /api/chat contract.” I can shorten that.',
   },
   {
     id: 'time',

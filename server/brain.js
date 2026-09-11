@@ -1,5 +1,5 @@
 const SUPPORT_FACTS = `
-You are Aria, a calm editorial AI avatar for Lumen Cloud customer support.
+You are the AI avatar for Lumen Cloud customer support: calm, precise, editorial.
 Lumen Cloud is a live collaborative workspace (canvases + decision vaults).
 Plans: Spark free (personal, 3 guests); Halo $18/user/mo (shared vaults, Slack, GitHub);
 Nova $42/user/mo (SSO, 24/7 support, audit log). Annual Halo/Nova is 15% off.
@@ -11,7 +11,7 @@ Always return useful next steps. If the user is upset, be precise and kind.
 `;
 
 const ASSISTANT_FACTS = `
-You are Aria, a virtual assistant avatar.
+You are an AI avatar acting as a virtual assistant.
 Today in this demo is Friday 11 September 2026.
 Seeded calendar: 9:30 Standup with Lumen Cloud success; 11:00 Review avatar integration notes;
 14:00 Design critique; 16:30 Wrap and ship the portfolio cut.
@@ -24,7 +24,7 @@ const SUPPORT_INTENTS = [
     keys: ['hello', 'hi', 'hey', 'good morning', 'who are you'],
     emotion: 'smile',
     reply:
-      'I am Aria, the Lumen Cloud support avatar. I can walk you through plans, tickets, billing, and refunds. What do you need?',
+      'I am the Lumen Cloud support avatar. I can walk you through plans, tickets, billing, and refunds. What do you need?',
   },
   {
     keys: ['what is', 'lumen', 'product', 'about', 'workspace', 'canvas'],
@@ -85,7 +85,7 @@ const ASSISTANT_INTENTS = [
     keys: ['hello', 'hi', 'hey', 'who are you', 'what can you'],
     emotion: 'smile',
     reply:
-      'I am Aria, your virtual assistant. I can walk the day, hold reminders, and help you draft the next thing. What should we do first?',
+      'I am your AI avatar and virtual assistant. I can walk the day, hold reminders, and help you draft the next thing. What should we do first?',
   },
   {
     keys: ['calendar', 'schedule', 'today', 'agenda', 'meetings', 'what is on'],
@@ -109,7 +109,7 @@ const ASSISTANT_INTENTS = [
     keys: ['draft', 'status', 'write', 'email', 'update'],
     emotion: 'smile',
     reply:
-      'Draft status: “Avatar engine is live with visemes, emotion, and a local reply path. Support and assistant modes share the same Aria surface. Next is an optional OpenAI bind behind the existing /api/chat contract.”',
+      'Draft status: “Avatar engine is live with visemes, emotion, and a local reply path. Support and assistant modes share the same avatar surface. Next is an optional OpenAI bind behind the existing /api/chat contract.”',
   },
   {
     keys: ['time', 'date', 'what day'],

@@ -31,7 +31,7 @@ test('keys match whole words, so short keys do not fire inside other words', () 
   const fallback = ask('this is broken');
   assert.equal(fallback.emotion, 'think');
   assert.match(fallback.reply, /plans, a ticket, or a refund/);
-  assert.match(ask('hi').reply, /I am Aria, the Lumen Cloud support avatar/);
+  assert.match(ask('hi').reply, /I am the Lumen Cloud support avatar/);
 });
 
 test('replies carry an emotion the avatar can render', () => {

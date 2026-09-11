@@ -22,7 +22,7 @@ export default function Composer({
   return (
     <form className="composer" onSubmit={submit}>
       <label className="sr-only" htmlFor="aria-input">
-        Message Aria
+        Message the avatar
       </label>
       <textarea
         id="aria-input"
@@ -30,7 +30,7 @@ export default function Composer({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={onKey}
-        placeholder={micOn ? 'Listening…' : 'Ask Aria, or use the mic'}
+        placeholder={micOn ? 'Listening…' : 'Ask the avatar, or use the mic'}
         disabled={pending}
       />
       <div className="composer-actions">
@@ -40,8 +40,8 @@ export default function Composer({
           onClick={onMic}
           disabled={pending || !micSupported}
           aria-pressed={micOn}
-          aria-label={micOn ? 'Stop listening' : 'Speak to Aria'}
-          title={micSupported ? 'Speak to Aria' : 'Voice is not available in this browser'}
+          aria-label={micOn ? 'Stop listening' : 'Speak to the avatar'}
+          title={micSupported ? 'Speak to the avatar' : 'Voice is not available in this browser'}
         >
           <MicIcon live={micOn} />
           {micOn ? 'Listening' : 'Mic'}

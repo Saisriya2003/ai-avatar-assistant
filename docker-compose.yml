@@ -1,10 +1,12 @@
-# Aria in one container: Express serves the chat API and the built React UI.
+# AI Avatar Integration System in one container: Express serves the chat API and the built React UI.
 #   docker compose up --build
 #   App http://localhost:5176      API http://localhost:5176/api/health
 # Optional: put OPENAI_API_KEY in a .env file next to this compose file to enable OpenAI replies.
 # Change the host port with WEB_PORT.
+name: ai-avatar-integration-system
+
 services:
-  aria:
+  app:
     build: .
     environment:
       PORT: "5070"

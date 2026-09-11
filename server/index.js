@@ -59,7 +59,7 @@ process.on('uncaughtException', (err) => {
     console.error(`Port ${PORT} is already in use.`);
     process.exit(1);
   }
-  console.error('Aria server kept running after an unexpected error:', err.message);
+  console.error('Avatar server kept running after an unexpected error:', err.message);
 });
 
 // When a production build exists (npm run build, or the Docker image), serve it
@@ -74,7 +74,7 @@ if (serveUi) {
 
 app.listen(PORT, '0.0.0.0', () => {
   const llm = Boolean(process.env.OPENAI_API_KEY);
-  console.log(`Aria server listening on http://127.0.0.1:${PORT}`);
+  console.log(`AI Avatar Integration System server listening on http://127.0.0.1:${PORT}`);
   console.log(`Reply engine: ${llm ? 'OpenAI' : 'local intents'}`);
   if (serveUi) console.log(`Serving the built UI from ${dist}`);
 });

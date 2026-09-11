@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Aria - one-command start for macOS / Linux.
+# AI Avatar Integration System - one-command start for macOS / Linux.
 # Installs dependencies on first run, then runs the chat API (5070) and UI (5176).
 # Use Chrome or Edge for microphone + speech. Press Ctrl+C to stop both.
 set -euo pipefail
@@ -21,5 +21,5 @@ sleep 4
 URL="http://localhost:5176"
 if command -v xdg-open >/dev/null; then xdg-open "$URL" >/dev/null 2>&1 || true
 elif command -v open >/dev/null; then open "$URL" || true; fi
-echo "Aria: API http://127.0.0.1:5070  UI $URL"
+echo "AI Avatar Integration System: API http://127.0.0.1:5070  UI $URL"
 wait

@@ -1,8 +1,8 @@
-# Aria — Complete Documentation
+# AI Avatar Integration System — Complete Documentation
 
 **AI Avatar Integration System — an interactive, talking avatar for customer support and virtual-assistant scenarios**
 
-Repository: https://github.com/Saisriya2003/ai-avatar-assistant
+Repository: https://github.com/Saisriya2003/ai-avatar-integration-system
 Author: Pettem Sai Sriya · saisriyavarma@gmail.com
 
 Resume project: *AI Avatar Integration System — Developed an interactive AI avatar for user engagement. Enabled real-time communication between users and AI avatar. Used for customer support and virtual assistant scenarios. Tech: Avatar APIs, React.*
@@ -34,7 +34,7 @@ Resume project: *AI Avatar Integration System — Developed an interactive AI av
 
 ## 1. Overview
 
-Aria is a browser-based AI avatar. A stylised SVG bust blinks, breathes, follows the pointer, shows emotions, and **speaks replies aloud with lip-synced mouth shapes (visemes)**. Users type or talk to it. It runs in two modes: **Support** (a fictional SaaS product, Lumen Cloud) and **Assistant** (calendar, reminders, drafting).
+The AI Avatar Integration System is a browser-based AI avatar. A stylised SVG bust blinks, breathes, follows the pointer, shows emotions, and **speaks replies aloud with lip-synced mouth shapes (visemes)**. Users type or talk to it. It runs in two modes: **Support** (a fictional SaaS product, Lumen Cloud) and **Assistant** (calendar, reminders, drafting).
 
 The heart of the project is the **AvatarEngine** — a controller object with a small, documented API (`setEmotion`, `setViseme`, `speak`, `lookAt`, `subscribe`, …). Every other part of the UI (chat, microphone, debug drawer) drives the avatar through that API and never touches the SVG directly. That is the "Avatar API" integration surface: a hosted avatar vendor (Ready Player Me, D-ID, HeyGen) can implement the same methods and drop in.
 
@@ -66,7 +66,7 @@ Design goals:
 ## 3. Repository layout
 
 ```
-ai-avatar-assistant/
+ai-avatar-integration-system/
 ├── index.html                  root HTML, fonts, favicon
 ├── public/favicon.svg
 ├── package.json                scripts: dev, build, preview, server
@@ -209,7 +209,7 @@ File: `src/data/content.js`.
 
 | Mode | Kicker / title | Suggested prompts | Seed messages |
 | --- | --- | --- | --- |
-| **Support** | Lumen Cloud · Customer support | What is Lumen Cloud? · Explain workspace pricing · How do I open a ticket? · What is your refund policy? | Welcome from Aria; plan overview and offer to file a draft ticket |
+| **Support** | Lumen Cloud · Customer support | What is Lumen Cloud? · Explain workspace pricing · How do I open a ticket? · What is your refund policy? | Welcome from the avatar; plan overview and offer to file a draft ticket |
 | **Assistant** | Personal · Virtual assistant | What's on my calendar today? · Remind me to send the report at 4 · Help me plan tomorrow morning · Draft a short status update | Introduction; summary of Friday's seeded calendar |
 
 Support knowledge (fictional): plans Spark (free, 3 guests) / Halo ($18 per user/month; shared vaults, Slack, GitHub) / Nova ($42; SSO, audit log, 24/7 support); 15% off annual; tickets via Help → New ticket (sample LC-48219); 14-day full refund on annual under 5 active canvases, then prorated credit; 99.97% thirty-day uptime; integrations Slack, GitHub, Figma, Google Calendar, Okta/Entra SSO on Nova.
@@ -241,19 +241,19 @@ Two columns on desktop: **stage** (avatar + status pill) on the left, **Conversa
 | Status pill | `Thinking` / `Speaking` / `Listening` / `Ready` plus source: `OpenAI`, `Local server`, or `On-device fallback` |
 | `Conversation` | Header with mode kicker/title/blurb, `ModeSwitcher`, `MessageList`, `PromptChips`, error line, `Composer`, `DebugDrawer` toggle |
 | `ModeSwitcher` | Support / Assistant tabs |
-| `MessageList` | User and Aria bubbles with timestamps and emotion tag; typing indicator while pending; auto-scroll |
+| `MessageList` | User and avatar bubbles with timestamps and emotion tag; typing indicator while pending; auto-scroll |
 | `PromptChips` | Four tappable prompts per mode |
 | `Composer` | Text field (Enter sends), Send button, Mic button (disabled with tooltip where unsupported) |
 | `DebugDrawer` | "Avatar API" panel: live `emotion`, `viseme`, `listening`, `speaking`, `lookAt`, server `engine`; buttons for each emotion and viseme that call the controller directly |
 
 ### 11.3 User workflow
 
-1. Open `http://localhost:5176`. The avatar blinks and glances around; status reads *Ready · Local server*; two seed messages from Aria are in the thread.
+1. Open `http://localhost:5176`. The avatar blinks and glances around; status reads *Ready · Local server*; two seed messages from the avatar are in the thread.
 2. Type a question and press Enter, or tap a prompt chip. Status → *Thinking*, avatar emotion `think`.
 3. The reply appears; the avatar switches to the reply's emotion and **speaks it** with lip-sync; status → *Speaking*, then *Ready*.
 4. Tap the **Mic**: a copper ring appears, status → *Listening*; interim words fill the composer; on the final result the message sends automatically.
 5. Switch to **Assistant**: thread reseeds; ask about the calendar or a reminder.
-6. Open the **Avatar API** drawer: watch state change live while Aria speaks; press emotion/viseme buttons to preview them.
+6. Open the **Avatar API** drawer: watch state change live while the avatar speaks; press emotion/viseme buttons to preview them.
 7. Move the pointer across the avatar; the eyes and head follow, and recentre when you leave.
 
 ## 12. Real-time state flow
@@ -263,7 +263,7 @@ user input ──▶ App.send()
                 ├─ controller.stop(); setListening(false); setEmotion('think'); pending=true
                 ├─ append user message
                 ├─ await sendChat()   (server intents | OpenAI | 9 s timeout → localBrain)
-                ├─ append Aria message; pending=false
+                ├─ append avatar message; pending=false
                 ├─ controller.setEmotion(reply.emotion)
                 └─ await controller.speak(reply.text)
                         ├─ setSpeaking(true) ─▶ emit ─▶ Avatar glow, pill "Speaking"
@@ -283,14 +283,14 @@ Node.js 18+, Git. Chrome or Edge recommended for both speech synthesis and recog
 ### One command
 
 ```powershell
-git clone https://github.com/Saisriya2003/ai-avatar-assistant.git
-cd ai-avatar-assistant
+git clone https://github.com/Saisriya2003/ai-avatar-integration-system.git
+cd ai-avatar-integration-system
 .\start.ps1      # Windows (or: powershell -ExecutionPolicy Bypass -File .\start.ps1)
 ```
 
 ```bash
-git clone https://github.com/Saisriya2003/ai-avatar-assistant.git
-cd ai-avatar-assistant
+git clone https://github.com/Saisriya2003/ai-avatar-integration-system.git
+cd ai-avatar-integration-system
 ./start.sh       # macOS / Linux
 ```
 
@@ -306,7 +306,7 @@ npm run dev      # http://localhost:5176  (second terminal)
 
 ### Docker
 
-`docker compose up --build` (or `docker build -t aria . && docker run -p 5176:5070 aria`) produces one container: a multi-stage build compiles the UI, then a `node:20-alpine` runtime runs `server/index.js`, which serves `/api/chat` **and** the built UI from the same origin. Host port defaults to 5176 (`WEB_PORT`); an `.env` beside the compose file can supply `OPENAI_API_KEY`.
+`docker compose up --build` (or `docker build -t ai-avatar-integration-system . && docker run -p 5176:5070 ai-avatar-integration-system`) produces one container: a multi-stage build compiles the UI, then a `node:20-alpine` runtime runs `server/index.js`, which serves `/api/chat` **and** the built UI from the same origin. Host port defaults to 5176 (`WEB_PORT`); an `.env` beside the compose file can supply `OPENAI_API_KEY`.
 
 ### Production build
 
