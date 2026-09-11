@@ -4,6 +4,23 @@ An interactive AI avatar for customer support and virtual-assistant conversation
 
 Aria is the face. The chat panel is the product. The **AvatarEngine** is the integration API.
 
+## Quick start (Windows)
+
+Needs Node 18+. No API keys. Use Chrome or Edge for the microphone.
+
+```powershell
+.\start.ps1
+```
+
+Installs dependencies on first run, starts the chat API on `http://127.0.0.1:5060` and the UI on `http://localhost:5176`, and opens the browser.
+
+| | |
+| --- | --- |
+| Stack | React, Vite, SVG avatar, Web Speech API, Node.js, Express |
+| Avatar API | `createAvatarController()` — emotion, visemes, listen/speak, blink, look-at |
+| Replies | Local intent engine by default; OpenAI when `OPENAI_API_KEY` is set |
+| Modes | Customer support (Lumen Cloud) and virtual assistant |
+
 ## What this demonstrates
 
 - Interactive AI avatar for user engagement
